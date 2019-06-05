@@ -1,29 +1,33 @@
-// esta clase está completa, no necesita nada más
-class ProfesionalAsociado {
+import universidad.*
+
+class Profesionales {
 	var universidad
-	
-	method universidad() { return universidad }
+	method universidad() = universidad 
 	method universidad(univ) { universidad = univ }
+} 
+
+
+class ProfesionalAsociado inherits Profesionales {
 	
-	method provinciasDondePuedeTrabajar() { return #{"Entre Ríos", "Corrientes", "Santa Fe"} }
+	method provinciaDondePuedeTrabajar() =  #{"Entre Ríos", "Corrientes", "Santa Fe"}
 	
-	method honorariosPorHora() { return 3000 }
+	method honorariosPorHora() = 3000 
 }
 
 
-// a esta clase le faltan métodos
-class ProfesionalVinculado {
-	var universidad
+class ProfesionalVinculado inherits Profesionales {
+		
+	method provinciaDondePuedeTrabajar() = universidad.provincia()
 	
-	method universidad() { return universidad }
-	method universidad(univ) { universidad = univ }
+	method honorariosPorHora() = universidad.honorarios()
 }
 
 
-// a esta clase le faltan atributos y métodos
-class ProfesionalLibre {
-	var universidad
+class ProfesionalLibre inherits Profesionales {
+	var property provincias = #{}
+	var property honorariosPorHora
+		
+	method provinciaDondePuedeTrabajar(provincia) { provincias.add(provincia) }
 	
-	method universidad() { return universidad }
-	method universidad(univ) { universidad = univ }
+	method honorariosPorHora() = honorariosPorHora
 }

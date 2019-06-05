@@ -1,0 +1,50 @@
+import profesionales.*
+import universidad.*
+import empresa.*
+
+describe "Unis y empleados" {
+	
+	var sanMartin = new Universidad(provincia = "Buenos Aires" , honorarios = 3500)
+    var rosario = new Universidad(provincia = "Santa Fe" , honorarios = 2800)
+    var corrientes = new Universidad(provincia = "Corrientes" , honorarios = 4200)
+    var hurlingham = new Universidad(provincia = "Hurlingham" , honorarios = 8800)
+    
+    var juana = new ProfesionalVinculado(universidad = rosario)
+    var melina = new ProfesionalAsociado(universidad = corrientes)
+    var rocio = new ProfesionalLibre()
+    var luciana = new ProfesionalLibre()
+    
+    var empresa = new Empresa(honorarioDeReferencia = 3500)
+
+
+fixture {
+	rocio.universidad(hurlingham)
+	rocio.provinciaDondePuedeTrabajar("Santa Fe")
+	rocio.provinciaDondePuedeTrabajar("Cordoba")
+	rocio.provinciaDondePuedeTrabajar("Buenos Aires")
+	rocio.honorariosPorHora(5000)
+	
+	luciana.universidad(rosario)
+	luciana.provinciaDondePuedeTrabajar("Santa Fe")
+	luciana.provinciaDondePuedeTrabajar("Entre Rios")
+	luciana.honorariosPorHora(3200)
+	
+	empresa.contratarEmpleado(juana) ; empresa.contratarEmpleado(melina)
+	empresa.contratarEmpleado(rocio) ; empresa.contratarEmpleado(luciana)
+}
+
+
+test "Empresa" {
+	assert.equals(2 , empresa.cuantosEstudiaronEn(rosario) )
+	assert.equals(1 , empresa.cuantosEstudiaronEn(hurlingham) )
+	assert.equals(0 , empresa.cuantosEstudiaronEn(sanMartin) )
+	
+	assert.equals([rocio], empresa.profesionalesCaros() )
+	assert.equals(#{rosario,corrientes,hurlingham} , empresa.universidadesFormadoras() )
+	assert.equals(juana, empresa.profesionalMasBarato() )
+	
+	assert.that(empresa.esDeGenteAcotada() )
+	
+	}
+
+}
